@@ -16,13 +16,14 @@
     <!--Div for the left sidebar showing the stocks-->
     <div class="container column">
         <div>
-            <form action="input">
-                <input type="text" placeholder="Search a Stock Ticker">
-            </form>
+            <input id="searched-stock" type="text" placeholder="Search a Stock Ticker">
+            <button id="search-btn">Search</button>
         </div>
         Trending
         <div class="container column">
-            Stock #1
+            <ul id="trending-stock">
+
+            </ul>
         </div>
     </div>
     
@@ -34,5 +35,6 @@
     </div> -->
 
     <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
