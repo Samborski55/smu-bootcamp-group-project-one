@@ -1,9 +1,9 @@
 
-// var searchedStockEl = document.getElementById("#searched-stock");
-searchedStockEl = document.querySelector("#searched-stock");
+var searchedStockEl = document.querySelector("#searched-stock");
 var trendingStockEl = document.querySelector("#trending-stock");
 var searchButtonEl = document.querySelector("#search-btn");
-var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5"
+var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
+var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
 var stockData = function (searchedStockEl) {
     var apiUrl = "https://api.stockdata.org/v1/data/quote?symbols=" + searchedStockEl + "&api_token=" + apiKey;
@@ -13,6 +13,8 @@ var stockData = function (searchedStockEl) {
         if(response.ok) {
             response.json().then(function(data) {
                 console.log(data);
+                searchHistory.push(searchedStockEl);
+                localStorage.setItem("search", JSON.stringify(searchHistory));
             });
         };
     });
@@ -22,31 +24,42 @@ var getReddit = function() {
     var options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Host': 'wallstreetbets.p.rapidapi.com',
+            'X-RapidAPI-Host': 'reddit-stock-and-crypto-sentiment-tracker.p.rapidapi.com',
             'X-RapidAPI-Key': 'febae9e70dmshf9e7e9305b18ebap18ce14jsn3c2ef979b41e'
         }
     };
-    fetch('https://wallstreetbets.p.rapidapi.com/?date=this_week&page=1', options)
+    fetch('https://reddit-stock-and-crypto-sentiment-tracker.p.rapidapi.com/filter/all-stocks/page/1', options)
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    for (var i = 0; i < 26; i++) {
-                        var redditStockName = document.createElement("li");
+                    var nameOfStocks = [];
+                    for (var i = 0; i < 2; i++) {
+                        var redditStockName = document.createElement("button");
+                        var linebreak = document.createElement("br");
+                        nameOfStocks[i] = data.results[i].ticker;
+                        console.log(nameOfStocks[i]);
+                            redditStockName.setAttribute("value", nameOfStocks[i]);
+                            redditStockName.addEventListener("click", function () {
+                                console.log(redditStockName.value);
+                             });
+                        // searchHistory.push(redditStockName.value);
+                        // localStorage.setItem("search", JSON.stringify(searchHistory));
                         var mentions = document.createElement("span");
-                        mentions.textContent = "Weekly Mentions: " + data.wsb_stocks[i].mentions;
+                        mentions.textContent = "Weekly Mentions: " + data.results[i].mentions;
                         var ticker = document.createElement("span");
-                        ticker.textContent = "Stock Name: " + data.wsb_stocks[i].ticker + " ";
+                        ticker.textContent = "Stock Name: " + data.results[i].ticker + " ";
                         trendingStockEl.append(redditStockName);
                         redditStockName.appendChild(ticker);
                         redditStockName.appendChild(mentions);
-                    }
-                });
-            };
-        });
-};
+                        trendingStockEl.append(linebreak);
+                        };          
+                    });
+                };
+            });
+        };
 
 var buttonClickHandler = function(event) {
-    var searchedStock = searchedStockEl.value.trim();
+    var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
 };
 
