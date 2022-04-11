@@ -2,6 +2,9 @@
 var searchedStockEl = document.querySelector("#searched-stock");
 var trendingStockEl = document.querySelector("#trending-stock");
 var searchButtonEl = document.querySelector("#search-btn");
+var stockInfoEl = document.querySelector("#stock-info");
+var dailyHighEl = document.querySelector("#daily-high");
+var dailyLowEl = document.querySelector("#daily-low");
 var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
@@ -15,6 +18,10 @@ var stockData = function (searchedStockEl) {
                 console.log(data);
                 searchHistory.push(searchedStockEl);
                 localStorage.setItem("search", JSON.stringify(searchHistory));
+                var dailyHigh = "Daily High: " + data.data[0].day_high;
+                var dailyLow = "Daily Low: " + data.data[0].day_low;
+                dailyHighEl.append(dailyHigh);
+                dailyLowEl.append(dailyLow);
             });
         };
     });
@@ -39,9 +46,9 @@ var getReddit = function() {
                         nameOfStocks[i] = data.results[i].ticker;
                         console.log(nameOfStocks[i]);
                             redditStockName.setAttribute("value", nameOfStocks[i]);
-                            redditStockName.addEventListener("click", function () {
-                                console.log(redditStockName.value);
-                             });
+                            // redditStockName.addEventListener("click", function () {
+                            //     console.log(redditStockName.value);
+                            //  });
                         // searchHistory.push(redditStockName.value);
                         // localStorage.setItem("search", JSON.stringify(searchHistory));
                         var mentions = document.createElement("span");
@@ -59,6 +66,8 @@ var getReddit = function() {
         };
 
 var buttonClickHandler = function(event) {
+    dailyHighEl.textContent = "";
+    dailyLowEl.textContent = "";
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
 };
@@ -67,4 +76,4 @@ searchButtonEl.addEventListener("click", buttonClickHandler);
 
 //Need to make links for trending stocks searchable
 
-getReddit();
+// getReddit();
