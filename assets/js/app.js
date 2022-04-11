@@ -2,6 +2,8 @@
 var searchedStockEl = document.querySelector("#searched-stock");
 var trendingStockEl = document.querySelector("#trending-stock");
 var searchButtonEl = document.querySelector("#search-btn");
+var savedStockEl = document.querySelector("#saved-stock");
+var savedStockButton = document.getElementById("#btn");
 var stockInfoEl = document.querySelector("#stock-info");
 var dailyHighEl = document.querySelector("#daily-high");
 var dailyLowEl = document.querySelector("#daily-low");
@@ -22,6 +24,7 @@ var stockData = function (searchedStockEl) {
                 var dailyLow = "Daily Low: " + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
                 dailyLowEl.append(dailyLow);
+                displaySearchHistory();
             });
         };
     });
@@ -45,6 +48,7 @@ var getReddit = function() {
                         var linebreak = document.createElement("br");
                         nameOfStocks[i] = data.results[i].ticker;
                         console.log(nameOfStocks[i]);
+                            redditStockName.setAttribute("id", nameOfStocks[i]);
                             redditStockName.setAttribute("value", nameOfStocks[i]);
                             // redditStockName.addEventListener("click", function () {
                             //     console.log(redditStockName.value);
@@ -59,11 +63,38 @@ var getReddit = function() {
                         redditStockName.appendChild(ticker);
                         redditStockName.appendChild(mentions);
                         trendingStockEl.append(linebreak);
+                        redditStockName.addEventListener("click", function() {
+                            stockData(this.value);
+
+                            dailyHighEl.textContent="";
+                            dailyLowEl.textContent="";
+                        });
                         };          
                     });
                 };
             });
         };
+
+var displaySearchHistory = function() {
+    savedStockEl.innerHTML = "";
+    for (var i=0; i < searchHistory.length; i++) {
+        var savedStock = document.createElement("input");
+        savedStock.setAttribute("class", "input");
+        savedStock.setAttribute("type", "text");
+        savedStock.setAttribute("id", searchHistory[i]); 
+        savedStock.setAttribute("value", searchHistory[i]);
+        savedStock.textContent = searchHistory[i];
+        savedStock.addEventListener("click", function() {
+            stockData(this.textContent);
+
+            dailyHighEl.textContent="";
+            dailyLowEl.textContent="";
+
+        });
+
+        savedStockEl.appendChild(savedStock);
+    };
+};
 
 var buttonClickHandler = function(event) {
     dailyHighEl.textContent = "";
@@ -77,3 +108,5 @@ searchButtonEl.addEventListener("click", buttonClickHandler);
 //Need to make links for trending stocks searchable
 
  getReddit();
+
+ displaySearchHistory();
