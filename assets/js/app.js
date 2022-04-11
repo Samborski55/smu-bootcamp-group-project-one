@@ -40,7 +40,7 @@ var getReddit = function() {
             if(response.ok) {
                 response.json().then(function(data) {
                     var nameOfStocks = [];
-                    for (var i = 0; i < 2; i++) {
+                    for (var i = 0; i < 25; i++) {
                         var redditStockName = document.createElement("button");
                         var linebreak = document.createElement("br");
                         nameOfStocks[i] = data.results[i].ticker;
@@ -76,4 +76,4 @@ searchButtonEl.addEventListener("click", buttonClickHandler);
 
 //Need to make links for trending stocks searchable
 
-// getReddit();
+ getReddit();
