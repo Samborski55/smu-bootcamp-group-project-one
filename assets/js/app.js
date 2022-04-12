@@ -50,11 +50,6 @@ var getReddit = function() {
                         console.log(nameOfStocks[i]);
                             redditStockName.setAttribute("id", nameOfStocks[i]);
                             redditStockName.setAttribute("value", nameOfStocks[i]);
-                            // redditStockName.addEventListener("click", function () {
-                            //     console.log(redditStockName.value);
-                            //  });
-                        // searchHistory.push(redditStockName.value);
-                        // localStorage.setItem("search", JSON.stringify(searchHistory));
                         var mentions = document.createElement("span");
                         mentions.textContent = "Weekly Mentions: " + data.results[i].mentions;
                         var ticker = document.createElement("span");
@@ -65,7 +60,6 @@ var getReddit = function() {
                         trendingStockEl.append(linebreak);
                         redditStockName.addEventListener("click", function() {
                             stockData(this.value);
-
                             dailyHighEl.textContent="";
                             dailyLowEl.textContent="";
                         });
@@ -86,12 +80,11 @@ var displaySearchHistory = function() {
         savedStock.textContent = searchHistory[i];
         savedStock.addEventListener("click", function() {
             stockData(this.textContent);
-
             dailyHighEl.textContent="";
             dailyLowEl.textContent="";
 
         });
-
+           
         savedStockEl.appendChild(savedStock);
     };
 };
@@ -104,8 +97,6 @@ var buttonClickHandler = function(event) {
 };
 
 searchButtonEl.addEventListener("click", buttonClickHandler);
-
-//Need to make links for trending stocks searchable
 
  getReddit();
 
