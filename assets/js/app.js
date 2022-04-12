@@ -7,6 +7,8 @@ var savedStockButton = document.getElementById("#btn");
 var stockInfoEl = document.querySelector("#stock-info");
 var dailyHighEl = document.querySelector("#daily-high");
 var dailyLowEl = document.querySelector("#daily-low");
+var yearHighEl = document.querySelector("#year-high");
+var yearLowEl = document.querySelector("#year-low");
 var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
@@ -17,7 +19,6 @@ var stockData = function (searchedStockEl) {
     .then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-                console.log(data);
                 searchHistory.push(searchedStockEl);
                 localStorage.setItem("search", JSON.stringify(searchHistory));
                 var dailyHigh = "Daily High: " + data.data[0].day_high;
@@ -29,6 +30,27 @@ var stockData = function (searchedStockEl) {
         };
     });
 };
+
+var yearStockData = function (searchedStockEl) {
+    var options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
+		    'X-RapidAPI-Key': 'febae9e70dmshf9e7e9305b18ebap18ce14jsn3c2ef979b41e'
+        }
+    };
+    fetch('https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=' + searchedStockEl, options)
+        .then(function(response) {
+            if(response.ok) {
+                response.json().then(function(data) {
+                    var yearlyHigh = "52 Week High: " + data.quoteResponse.result[0].fiftyTwoWeekHigh;
+                    var yearlyLow = "52 Week Low: " + data.quoteResponse.result[0].fiftyTwoWeekLow;
+                    yearHighEl.append(yearlyHigh);
+                    yearLowEl.append(yearlyLow);
+                })
+            }
+        })
+}
 //Pull top 25 stocks by weekly mentions
 var getReddit = function() {
     var options = {
@@ -47,7 +69,6 @@ var getReddit = function() {
                         var redditStockName = document.createElement("button");
                         var linebreak = document.createElement("br");
                         nameOfStocks[i] = data.results[i].ticker;
-                        console.log(nameOfStocks[i]);
                             redditStockName.setAttribute("id", nameOfStocks[i]);
                             redditStockName.setAttribute("value", nameOfStocks[i]);
                         var mentions = document.createElement("span");
@@ -60,8 +81,11 @@ var getReddit = function() {
                         trendingStockEl.append(linebreak);
                         redditStockName.addEventListener("click", function() {
                             stockData(this.value);
+                            yearStockData(this.value);
                             dailyHighEl.textContent="";
                             dailyLowEl.textContent="";
+                            yearHighEl.textContent="";
+                            yearLowEl.textContent="";
                         });
                         };          
                     });
@@ -80,8 +104,11 @@ var displaySearchHistory = function() {
         savedStock.textContent = searchHistory[i];
         savedStock.addEventListener("click", function() {
             stockData(this.textContent);
+            yearStockData(this.textContent);
             dailyHighEl.textContent="";
             dailyLowEl.textContent="";
+            yearHighEl.textContent="";
+            yearLowEl.textContent=""
 
         });
            
@@ -92,8 +119,11 @@ var displaySearchHistory = function() {
 var buttonClickHandler = function(event) {
     dailyHighEl.textContent = "";
     dailyLowEl.textContent = "";
+    yearHighEl.textContent = "";
+    yearLowEl.textContent = "";
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
+    yearStockData(searchedStock);
 };
 
 searchButtonEl.addEventListener("click", buttonClickHandler);
