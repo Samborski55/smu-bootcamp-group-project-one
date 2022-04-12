@@ -12,6 +12,7 @@ var yearLowEl = document.querySelector("#year-low");
 var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
+// function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
     var apiUrl = "https://api.stockdata.org/v1/data/quote?symbols=" + searchedStockEl + "&api_token=" + apiKey;
 
@@ -31,6 +32,7 @@ var stockData = function (searchedStockEl) {
     });
 };
 
+// function to get 52 week high and low from yahoo finance
 var yearStockData = function (searchedStockEl) {
     var options = {
         method: 'GET',
@@ -47,10 +49,11 @@ var yearStockData = function (searchedStockEl) {
                     var yearlyLow = "52 Week Low: " + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
-                })
-            }
-        })
-}
+                });
+            };
+        });
+};
+
 //Pull top 25 stocks by weekly mentions
 var getReddit = function() {
     var options = {
@@ -93,6 +96,7 @@ var getReddit = function() {
             });
         };
 
+//display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
     for (var i=0; i < searchHistory.length; i++) {
@@ -116,6 +120,7 @@ var displaySearchHistory = function() {
     };
 };
 
+//function for what to do when search button is clicked
 var buttonClickHandler = function(event) {
     dailyHighEl.textContent = "";
     dailyLowEl.textContent = "";
@@ -128,6 +133,8 @@ var buttonClickHandler = function(event) {
 
 searchButtonEl.addEventListener("click", buttonClickHandler);
 
- getReddit();
+//Display Reddit trending stocks on page load
+getReddit();
 
- displaySearchHistory();
+//Display Search History to page on load
+displaySearchHistory();
