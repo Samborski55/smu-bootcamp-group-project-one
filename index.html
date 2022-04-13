@@ -5,37 +5,54 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Internet Chooses Stocks</title>
+    <title>The Trending Ape</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 <body>
-    <header class="header column">
-        <h1>The Internet Chooses Stocks</h1>
-    </header>
-
-    <!--Div for the left sidebar showing the stocks-->
-    <div class="container column">
-        <div>
-            <input id="searched-stock" type="text" placeholder="Search a Stock Ticker">
-            <button id="search-btn">Search</button>
+    <section class="hero is-success is-halfheight">
+        <div class="hero-body">
+            <div class="">
+                <p class="title">
+                    <a href="./index.html">The Trending Ape</a>
+                </p>
+                <p class="subtitle">WallStreetBets Top 25 Trending Tickers</p>
+            </div>
         </div>
-        Trending
-        <div class="container column">
-            <ul id="trending-stock">
+    </section>
 
-            </ul>
-        </div>
-    </div>
-    <div class="stock-info" id="stock-info">
-      <h4 class="year-low" id="year-low"></h4>
-      <h4 class="year-high" id="year-high"></h4>
-      <h4 class="daily-low" id="daily-low"></h4>
-      <h4 class="daily-high" id="daily-high"></h4>
-    </div>
-    <div class="saved-stock" id="saved-stock">
-    </div>
+    <section class="section">
+        <div class="columns is-centered is-mobile">
+            <!--div for the left sidebar showing the stocks-->
+            <div class="subtitle is-3 column has-text-centered">
+               <p class="is-size-4">WSB Top 25 Tickers</p>
+                <div class="">
+                    <ul id="trending-stock"></ul>
+                </div>
+            </div>
+
+
+            <div class="column is-6 has-text-centered">
+                <p class="is-size-4">Search a Stock Ticker</p>
+                <input id="searched-stock" type="text" placeholder="i.e. APPL, TSLA, SHCR">
+                <button class="button is-primary" id="search-btn">Search</button>
+                
+                <div class="section">
+                    <p class="is-size-4">Previously Searched Stocks</p>
+                    <div class="saved-stock" id="saved-stock"></div>
+                </div>
+            </div>
     
+            <div class="stock-info column is-3 has-text-centered" id="stock-info">
+                <p class="is-size-4">Stock Information</p>
+                <h4 class="year-low" id="year-low"></h4>
+                <h4 class="year-high" id="year-high"></h4>
+                <h4 class="daily-low" id="daily-low"></h4>
+                <h4 class="daily-high" id="daily-high"></h4>
+                <h4 class="dailyChangePercentage" id="daily-change"></h4>
+            </div>
+        </div>
+    </section>
     <!-- <div class="column">
         <button class="button is-info">Stonks</button>
     </div>
@@ -45,5 +62,6 @@
 
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/app.js"></script>
+    </div>
 </body>
 </html>
