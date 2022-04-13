@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Internet Chooses Stocks</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/app.css" />
 </head>
 <body>
     <header class="header column">
@@ -15,26 +15,31 @@
     </header>
 
     <!--Div for the left sidebar showing the stocks-->
-    <div class="container column">
-        <div>
-            <input id="searched-stock" type="text" placeholder="Search a Stock Ticker">
-            <button id="search-btn">Search</button>
-        </div>
-        Trending
-        <div class="container column">
-            <ul id="trending-stock">
+    <div class="columns">
+        <div class="container column is-vcentered is-3">
+            <div class="column">
+                <input id="searched-stock" type="text" placeholder="Search a Stock Ticker">
+                <button id="search-btn">Search</button>
+            </div>
+            <div class="column">
 
-            </ul>
+                Trending
+            </div>
+            <div class="container">
+                <ul id="trending-stock">
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="stock-info" id="stock-info">
-      <h4 class="year-low" id="year-low"></h4>
-      <h4 class="year-high" id="year-high"></h4>
-      <h4 class="daily-low" id="daily-low"></h4>
-      <h4 class="daily-high" id="daily-high"></h4>
-    </div>
-    <div class="saved-stock" id="saved-stock">
-    </div>
+        <br>
+        <div class="columns">
+            <div class="stock-info column is-12" id="stock-info">
+                <h4 class="year-low" id="year-low"></h4>
+                <h4 class="year-high" id="year-high"></h4>
+                <h4 class="daily-low" id="daily-low"></h4>
+                <h4 class="daily-high" id="daily-high"></h4>
+                <div class="saved-stock column is-3" id="saved-stock"></div>
+            </div>
+        </div>
     
     <!-- <div class="column">
         <button class="button is-info">Stonks</button>

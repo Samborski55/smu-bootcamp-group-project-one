@@ -80,6 +80,7 @@ var getReddit = function() {
                         ticker.textContent = "Stock Name: " + data.results[i].ticker + " ";
                         trendingStockEl.append(redditStockName);
                         redditStockName.appendChild(ticker);
+                        redditStockName.append(linebreak);
                         redditStockName.appendChild(mentions);
                         trendingStockEl.append(linebreak);
                         redditStockName.addEventListener("click", function() {
