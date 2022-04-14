@@ -109,7 +109,7 @@ var getReddit = function() {
                         redditStockName.appendChild(dailyChange);
                         trendingStockEl.append(linebreak);
                         redditStockName.addEventListener("click", function() {
-                            // stockData(this.value);
+                            stockData(this.value);
                             yearStockData(this.value);
                             dailyHighEl.textContent="";
                             dailyLowEl.textContent="";
@@ -135,7 +135,7 @@ var displaySearchHistory = function() {
             savedStock.setAttribute("value", uniqueSearch[i]);
             savedStock.textContent = uniqueSearch[i];
             savedStock.addEventListener("click", function() {
-                // stockData(this.textContent); 
+                stockData(this.textContent); 
                 yearStockData(this.textContent);
                 dailyHighEl.textContent="";
                 dailyLowEl.textContent="";
@@ -155,7 +155,7 @@ var displaySearchHistory = function() {
             savedStock.setAttribute("value", uniqueSearch[i]);
             savedStock.textContent = uniqueSearch[i];
             savedStock.addEventListener("click", function() {
-                // stockData(this.textContent); 
+                stockData(this.textContent); 
                 yearStockData(this.textContent);
                 dailyHighEl.textContent="";
                 dailyLowEl.textContent="";
@@ -182,7 +182,7 @@ var buttonClickHandler = function(event) {
     yearLowEl.textContent = "";
     dailyChangePercentageEl.textContent = "";
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
-    // stockData(searchedStock);
+    stockData(searchedStock);
     yearStockData(searchedStock);
 };
 
