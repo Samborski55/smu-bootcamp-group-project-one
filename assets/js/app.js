@@ -127,10 +127,7 @@ var getReddit = function() {
 
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
-    savedStockEl.innerHTML = "";
-    var totalIndex = searchHistory.length;
-    console.log(totalIndex);
-    for (var i = 0; i < 5; i++) {
+    var appendStockHisory = function(){
         var savedStock = document.createElement("input");
         savedStock.setAttribute("class", "input");
         savedStock.setAttribute("type", "text");
@@ -138,18 +135,66 @@ var displaySearchHistory = function() {
         savedStock.setAttribute("value", uniqueSearch[i]);
         savedStock.textContent = uniqueSearch[i];
         savedStock.addEventListener("click", function() {
-            stockData(this.textContent); 
-            yearStockData(this.textContent);
-            dailyHighEl.textContent="";
-            dailyLowEl.textContent="";
-            yearHighEl.textContent="";
-            yearLowEl.textContent="";
-            dailyChangePercentageEl.textContent="";
-
-        });
-           
+        stockData(this.textContent); 
+        yearStockData(this.textContent);
+        dailyHighEl.textContent="";
+        dailyLowEl.textContent="";
+        yearHighEl.textContent="";
+        yearLowEl.textContent="";
+        dailyChangePercentageEl.textContent="";
         savedStockEl.appendChild(savedStock);
+        });
     };
+    savedStockEl.innerHTML = "";
+    var totalIndex = searchHistory.length;
+    console.log(totalIndex);
+    if (uniqueSearch.length > 0 && uniqueSearch.length < 10) {
+        for (var i = 0; i < uniqueSearch.length; i++) {
+            var savedStock = document.createElement("input");
+            savedStock.setAttribute("class", "input");
+            savedStock.setAttribute("type", "text");
+            savedStock.setAttribute("id", uniqueSearch[i]); 
+            savedStock.setAttribute("value", uniqueSearch[i]);
+            savedStock.textContent = uniqueSearch[i];
+            savedStock.addEventListener("click", function() {
+                stockData(this.textContent); 
+                yearStockData(this.textContent);
+                dailyHighEl.textContent="";
+                dailyLowEl.textContent="";
+                yearHighEl.textContent="";
+                yearLowEl.textContent="";
+                dailyChangePercentageEl.textContent="";
+
+            });   
+            savedStockEl.appendChild(savedStock);
+        };
+    }
+    else if (uniqueSearch.length > 10) {
+        for (var i = 0; i < 10; i++) {
+            var savedStock = document.createElement("input");
+            savedStock.setAttribute("class", "input");
+            savedStock.setAttribute("type", "text");
+            savedStock.setAttribute("id", uniqueSearch[i]); 
+            savedStock.setAttribute("value", uniqueSearch[i]);
+            savedStock.textContent = uniqueSearch[i];
+            savedStock.addEventListener("click", function() {
+                stockData(this.textContent); 
+                yearStockData(this.textContent);
+                dailyHighEl.textContent="";
+                dailyLowEl.textContent="";
+                yearHighEl.textContent="";
+                yearLowEl.textContent="";
+                dailyChangePercentageEl.textContent="";
+
+            });   
+            savedStockEl.appendChild(savedStock);
+        };
+    }
+    else {
+        var emptyHistory = document.createElement("p");
+        emptyHistory.textContent = "Search History is Empty"
+        savedStockEl.appendChild(emptyHistory);
+    }
 };
 
 //function for what to do when search button is clicked
