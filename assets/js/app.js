@@ -12,7 +12,9 @@ var yearLowEl = document.querySelector("#year-low");
 var dailyChangePercentageEl = document.querySelector("#daily-change");
 var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
-var uniqueSearch = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
+var uniqueSearchReg = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
+var uniqueSearch = uniqueSearchReg.reverse();
+
 
 // function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
@@ -24,8 +26,8 @@ var stockData = function (searchedStockEl) {
             response.json().then(function(data) {
                 searchHistory.push(searchedStockEl);
                 localStorage.setItem("search", JSON.stringify(searchHistory));
-                var dailyHigh = "Daily High: " + data.data[0].day_high;
-                var dailyLow = "Daily Low: " + data.data[0].day_low;
+                var dailyHigh = "Daily High: $" + data.data[0].day_high;
+                var dailyLow = "Daily Low: $" + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
                 dailyLowEl.append(dailyLow);
                 displaySearchHistory();
@@ -47,8 +49,8 @@ var yearStockData = function (searchedStockEl) {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    var yearlyHigh = "52 Week High: " + data.quoteResponse.result[0].fiftyTwoWeekHigh;
-                    var yearlyLow = "52 Week Low: " + data.quoteResponse.result[0].fiftyTwoWeekLow;
+                    var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
+                    var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
@@ -73,7 +75,6 @@ var getReddit = function() {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    console.log(data)
                     var nameOfStocks = [];
                     for (var i = 0; i < 25; i++) {
                         var rank = data.results[i].rank;
@@ -128,26 +129,55 @@ var getReddit = function() {
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
-    for (var i=0; i < uniqueSearch.length; i++) {
-        var savedStock = document.createElement("input");
-        savedStock.setAttribute("class", "input");
-        savedStock.setAttribute("type", "text");
-        savedStock.setAttribute("id", uniqueSearch[i]); 
-        savedStock.setAttribute("value", uniqueSearch[i]);
-        savedStock.textContent = uniqueSearch[i];
-        savedStock.addEventListener("click", function() {
-            stockData(this.textContent);
-            yearStockData(this.textContent);
-            dailyHighEl.textContent="";
-            dailyLowEl.textContent="";
-            yearHighEl.textContent="";
-            yearLowEl.textContent="";
-            dailyChangePercentageEl.textContent="";
+    var totalIndex = searchHistory.length;
+    console.log(totalIndex);
+    if (uniqueSearch.length > 0 && uniqueSearch.length < 10) {
+        for (var i = 0; i < uniqueSearch.length; i++) {
+            var savedStock = document.createElement("input");
+            savedStock.setAttribute("class", "input");
+            savedStock.setAttribute("type", "text");
+            savedStock.setAttribute("id", uniqueSearch[i]); 
+            savedStock.setAttribute("value", uniqueSearch[i]);
+            savedStock.textContent = uniqueSearch[i];
+            savedStock.addEventListener("click", function() {
+                stockData(this.textContent); 
+                yearStockData(this.textContent);
+                dailyHighEl.textContent="";
+                dailyLowEl.textContent="";
+                yearHighEl.textContent="";
+                yearLowEl.textContent="";
+                dailyChangePercentageEl.textContent="";
 
-        });
-           
-        savedStockEl.appendChild(savedStock);
-    };
+            });   
+            savedStockEl.appendChild(savedStock);
+        };
+    }
+    else if (uniqueSearch.length > 10) {
+        for (var i = 0; i < 10; i++) {
+            var savedStock = document.createElement("input");
+            savedStock.setAttribute("class", "input");
+            savedStock.setAttribute("type", "text");
+            savedStock.setAttribute("id", uniqueSearch[i]); 
+            savedStock.setAttribute("value", uniqueSearch[i]);
+            savedStock.textContent = uniqueSearch[i];
+            savedStock.addEventListener("click", function() {
+                stockData(this.textContent); 
+                yearStockData(this.textContent);
+                dailyHighEl.textContent="";
+                dailyLowEl.textContent="";
+                yearHighEl.textContent="";
+                yearLowEl.textContent="";
+                dailyChangePercentageEl.textContent="";
+
+            });   
+            savedStockEl.appendChild(savedStock);
+        };
+    }
+    else {
+        var emptyHistory = document.createElement("p");
+        emptyHistory.textContent = "Search History is Empty"
+        savedStockEl.appendChild(emptyHistory);
+    }
 };
 
 //function for what to do when search button is clicked
@@ -162,12 +192,18 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
+var refreshPage = function() {
+    window.parent.location = window.parent.location.href;    
+};
+
 searchButtonEl.addEventListener("click", buttonClickHandler);
+
+
+//Display Search History to page on load
+displaySearchHistory();
 
 //Display Reddit trending stocks on page load
 getReddit();
 
-//Display Search History to page on load
-displaySearchHistory();
 
 console.log(searchHistory);

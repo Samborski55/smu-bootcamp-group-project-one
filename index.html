@@ -13,44 +13,45 @@
     <section class="hero is-success is-halfheight">
         <div class="hero-body">
             <div class="">
-                <p class="title">
+                <p class="title is-1">
                     <a href="./index.html">The Trending Ape</a>
                 </p>
-                <p class="subtitle">WallStreetBets Top 25 Trending Tickers</p>
+                <p class="subtitle is-size-4">WallStreetBets Top 25 Trending Tickers</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class="columns is-centered is-mobile">
+    <section class="">
+        <div class="columns">
             <!--div for the left sidebar showing the stocks-->
-            <div class="subtitle is-3 column has-text-centered">
-               <p class="is-size-4">WSB Top 25 Tickers</p>
+            <div id="topStocks" class="column is-narrow has-text-centered">
+               <p class="subtitle is-size-4">WSB Top 25 Tickers</p>
                 <div class="">
                     <ul id="trending-stock"></ul>
                 </div>
             </div>
 
 
-            <div class="column is-6 has-text-centered">
-                <p class="is-size-4">Search a Stock Ticker</p>
+            <div class="column is-7 has-text-centered" >
+                <p class="subtitle is-size-4">Search a Stock Ticker</p>
                 <input id="searched-stock" type="text" placeholder="i.e. APPL, TSLA, SHCR">
                 <button class="button is-primary" id="search-btn">Search</button>
                 
                 <div class="section">
-                    <p class="is-size-4">Previously Searched Stocks</p>
+                    <p class="subtitle is-size-4">Previously Searched Stocks</p>
                     <div class="saved-stock" id="saved-stock"></div>
                 </div>
             </div>
     
             <div class="stock-info column is-3 has-text-centered" id="stock-info">
-                <p class="is-size-4">Stock Information</p>
+                <p class="subtitle is-size-4">Stock Information</p>
                 <h4 class="year-low" id="year-low"></h4>
                 <h4 class="year-high" id="year-high"></h4>
                 <h4 class="daily-low" id="daily-low"></h4>
                 <h4 class="daily-high" id="daily-high"></h4>
                 <h4 class="dailyChangePercentage" id="daily-change"></h4>
-            </div>
+            </div> -->
+
         </div>
     </section>
     <!-- <div class="column">
@@ -60,8 +61,10 @@
         <button class="button is-info">Stonks</button>
     </div> -->
 
+    <script src="jquery-3.6.0.min.js"></script>
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/app.js"></script>
     </div>
+     
 </body>
 </html>
