@@ -9,10 +9,6 @@
 
 ----
 
-### Freelancers connects you to local expertise to get your job done, whatever it may be - contractor, electrician, tattoo artist, painter - you name it.  
-
-----
-
 ## Deployed Page
 [Stock Ape Deployed Page](https://samborski55.github.io/smu-bootcamp-group-project-one/)
 
