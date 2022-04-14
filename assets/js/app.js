@@ -1,4 +1,4 @@
-
+//Global Variables
 var searchedStockEl = document.querySelector("#searched-stock");
 var trendingStockEl = document.querySelector("#trending-stock");
 var searchButtonEl = document.querySelector("#search-btn");
@@ -15,11 +15,10 @@ var companyNameEl = document.querySelector("#companyName")
 var sharesOutstandingEl = document.querySelector("#sharesOutstanding")
 var sharesShortEl = document.querySelector("#sharesShort")
 var sharesShortPrevMonthEl = document.querySelector("#sharesShortPrevMonth")
-var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
+var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 var uniqueSearchReg = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
 var uniqueSearch = uniqueSearchReg.reverse();
-
 
 // function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
@@ -29,8 +28,6 @@ var stockData = function (searchedStockEl) {
     .then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-                searchHistory.push(searchedStockEl);
-                localStorage.setItem("search", JSON.stringify(searchHistory));
                 var dailyHigh = "Daily High: $" + data.data[0].day_high;
                 var dailyLow = "Daily Low: $" + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
@@ -54,9 +51,10 @@ var yearStockData = function (searchedStockEl) {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    console.log(data);
                     var tickerSymbol = "Ticker Symbol: " + data.quoteResponse.result[0].symbol;
                     var companyName = "Company Name: " + data.quoteResponse.result[0].shortName;
+                    searchHistory.push(searchedStockEl);
+                    localStorage.setItem("search", JSON.stringify(searchHistory));
                     var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
@@ -224,8 +222,6 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
-
-
 var refreshPage = function() {
     window.parent.location = window.parent.location.href;    
 };
@@ -238,5 +234,3 @@ displaySearchHistory();
 
 //Display Reddit trending stocks on page load
 getReddit();
-
-
