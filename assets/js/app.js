@@ -1,4 +1,4 @@
-
+//Global Variables
 var searchedStockEl = document.querySelector("#searched-stock");
 var trendingStockEl = document.querySelector("#trending-stock");
 var searchButtonEl = document.querySelector("#search-btn");
@@ -10,11 +10,10 @@ var dailyLowEl = document.querySelector("#daily-low");
 var yearHighEl = document.querySelector("#year-high");
 var yearLowEl = document.querySelector("#year-low");
 var dailyChangePercentageEl = document.querySelector("#daily-change");
-var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
+var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 var uniqueSearchReg = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
 var uniqueSearch = uniqueSearchReg.reverse();
-
 
 // function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
@@ -24,8 +23,6 @@ var stockData = function (searchedStockEl) {
     .then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-                searchHistory.push(searchedStockEl);
-                localStorage.setItem("search", JSON.stringify(searchHistory));
                 var dailyHigh = "Daily High: $" + data.data[0].day_high;
                 var dailyLow = "Daily Low: $" + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
@@ -49,13 +46,14 @@ var yearStockData = function (searchedStockEl) {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
+                    searchHistory.push(searchedStockEl);
+                    localStorage.setItem("search", JSON.stringify(searchHistory));
                     var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
                     dailyChangePercentageEl.append(dailyChangePercentage);
-
                 });
                 
             };
@@ -128,9 +126,7 @@ var getReddit = function() {
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
-    var totalIndex = searchHistory.length;
-    console.log(totalIndex);
-    if (uniqueSearch.length > 0 && uniqueSearch.length < 10) {
+    if (uniqueSearch.length < 10) {
         for (var i = 0; i < uniqueSearch.length; i++) {
             var savedStock = document.createElement("input");
             savedStock.setAttribute("class", "input");
@@ -146,7 +142,6 @@ var displaySearchHistory = function() {
                 yearHighEl.textContent="";
                 yearLowEl.textContent="";
                 dailyChangePercentageEl.textContent="";
-
             });   
             savedStockEl.appendChild(savedStock);
         };
@@ -191,10 +186,6 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
-var refreshPage = function() {
-    window.parent.location = window.parent.location.href;    
-};
-
 searchButtonEl.addEventListener("click", buttonClickHandler);
 
 
@@ -203,6 +194,3 @@ displaySearchHistory();
 
 //Display Reddit trending stocks on page load
 getReddit();
-
-
-console.log(searchHistory);
