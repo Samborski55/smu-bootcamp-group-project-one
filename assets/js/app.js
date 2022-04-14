@@ -26,8 +26,8 @@ var stockData = function (searchedStockEl) {
             response.json().then(function(data) {
                 searchHistory.push(searchedStockEl);
                 localStorage.setItem("search", JSON.stringify(searchHistory));
-                var dailyHigh = "Daily High: " + data.data[0].day_high;
-                var dailyLow = "Daily Low: " + data.data[0].day_low;
+                var dailyHigh = "Daily High: $" + data.data[0].day_high;
+                var dailyLow = "Daily Low: $" + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
                 dailyLowEl.append(dailyLow);
                 displaySearchHistory();
@@ -49,8 +49,8 @@ var yearStockData = function (searchedStockEl) {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    var yearlyHigh = "52 Week High: " + data.quoteResponse.result[0].fiftyTwoWeekHigh;
-                    var yearlyLow = "52 Week Low: " + data.quoteResponse.result[0].fiftyTwoWeekLow;
+                    var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
+                    var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
@@ -127,24 +127,6 @@ var getReddit = function() {
 
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
-    var appendStockHisory = function(){
-        var savedStock = document.createElement("input");
-        savedStock.setAttribute("class", "input");
-        savedStock.setAttribute("type", "text");
-        savedStock.setAttribute("id", uniqueSearch[i]); 
-        savedStock.setAttribute("value", uniqueSearch[i]);
-        savedStock.textContent = uniqueSearch[i];
-        savedStock.addEventListener("click", function() {
-        stockData(this.textContent); 
-        yearStockData(this.textContent);
-        dailyHighEl.textContent="";
-        dailyLowEl.textContent="";
-        yearHighEl.textContent="";
-        yearLowEl.textContent="";
-        dailyChangePercentageEl.textContent="";
-        savedStockEl.appendChild(savedStock);
-        });
-    };
     savedStockEl.innerHTML = "";
     var totalIndex = searchHistory.length;
     console.log(totalIndex);
@@ -209,12 +191,18 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
+var refreshPage = function() {
+    window.parent.location = window.parent.location.href;    
+};
+
 searchButtonEl.addEventListener("click", buttonClickHandler);
+
+
+//Display Search History to page on load
+displaySearchHistory();
 
 //Display Reddit trending stocks on page load
 getReddit();
 
-//Display Search History to page on load
-displaySearchHistory();
 
 console.log(searchHistory);
