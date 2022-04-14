@@ -1,8 +1,14 @@
-$section-padding {
-    size: 3.5rem 3.5rem;
+.hero {
+    background-image: url("../images/apein-removebg-preview.png");
+    background-repeat: no-repeat;
+    background-position-x: right; 
+    border-bottom: 1px solid black;
 }
 
-.is-vertical-center {
-    display: flex;
-    align-items: center;
-  }
+#topStocks{
+background: rgb(72,199,142);
+background: linear-gradient(180deg, rgba(72,199,142,1) 0%, rgba(162,249,210,1) 28%, rgba(142,231,191,1) 52%, rgba(0,102,56,1) 100%);
+border: 1px solid black;
+border-top: none;
+margin-top: 11px;
+}
