@@ -9,8 +9,10 @@ var dailyHighEl = document.querySelector("#daily-high");
 var dailyLowEl = document.querySelector("#daily-low");
 var yearHighEl = document.querySelector("#year-high");
 var yearLowEl = document.querySelector("#year-low");
-var apiKey = "gApT0eMTmmV7JFtKP2TjPCOFsxH7d2lBKwuPhEi5";
+var dailyChangePercentageEl = document.querySelector("#daily-change");
+var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+var uniqueSearch = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
 
 // function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
@@ -38,7 +40,7 @@ var yearStockData = function (searchedStockEl) {
         method: 'GET',
         headers: {
             'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
-		    'X-RapidAPI-Key': 'febae9e70dmshf9e7e9305b18ebap18ce14jsn3c2ef979b41e'
+		    'X-RapidAPI-Key': '057567cd18mshd1157073f98bd53p13b433jsn1f9b6a4df973'
         }
     };
     fetch('https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=' + searchedStockEl, options)
@@ -47,9 +49,13 @@ var yearStockData = function (searchedStockEl) {
                 response.json().then(function(data) {
                     var yearlyHigh = "52 Week High: " + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: " + data.quoteResponse.result[0].fiftyTwoWeekLow;
+                    var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
+                    dailyChangePercentageEl.append(dailyChangePercentage);
+
                 });
+                
             };
         });
 };
@@ -67,21 +73,42 @@ var getReddit = function() {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
+                    console.log(data)
                     var nameOfStocks = [];
                     for (var i = 0; i < 25; i++) {
+                        var rank = data.results[i].rank;
+                        var yesterdaysRank = data.results[i].rank_24h_ago;
+                        var parseYesterday = Number(yesterdaysRank);
                         var redditStockName = document.createElement("button");
                         var linebreak = document.createElement("br");
                         nameOfStocks[i] = data.results[i].ticker;
                             redditStockName.setAttribute("id", nameOfStocks[i]);
                             redditStockName.setAttribute("value", nameOfStocks[i]);
-                        var mentions = document.createElement("span");
+                        var mentions = document.createElement("p");
                         mentions.textContent = "Weekly Mentions: " + data.results[i].mentions;
-                        var ticker = document.createElement("span");
+                        var ticker = document.createElement("p");
                         ticker.textContent = "Stock Name: " + data.results[i].ticker + " ";
+                        
                         trendingStockEl.append(redditStockName);
+                         if (rank < parseYesterday) {
+                             redditStockName.style.backgroundColor= "green";
+                             var dailyChange = document.createElement("p");
+                             dailyChange.textContent = "Increased ranking by " + (parseYesterday - rank) + " during past 24/hr."
+                         }
+                         else if (rank > parseYesterday) {
+                             redditStockName.style.backgroundColor= "red";
+                             var dailyChange = document.createElement("p");
+                             dailyChange.textContent = "Decreased ranking by " + (rank - parseYesterday) + " during past 24/hr."
+                         }
+                         else {
+                             redditStockName.style.backgroundColor= "grey";
+                             var dailyChange = document.createElement("p");
+                             dailyChange.textContent = "Hasn't changed ranking in past 24/hr."
+                         }
                         redditStockName.appendChild(ticker);
                         redditStockName.append(linebreak);
                         redditStockName.appendChild(mentions);
+                        redditStockName.appendChild(dailyChange);
                         trendingStockEl.append(linebreak);
                         redditStockName.addEventListener("click", function() {
                             stockData(this.value);
@@ -90,6 +117,7 @@ var getReddit = function() {
                             dailyLowEl.textContent="";
                             yearHighEl.textContent="";
                             yearLowEl.textContent="";
+                            dailyChangePercentageEl.textContent="";
                         });
                         };          
                     });
@@ -100,20 +128,21 @@ var getReddit = function() {
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
-    for (var i=0; i < searchHistory.length; i++) {
+    for (var i=0; i < uniqueSearch.length; i++) {
         var savedStock = document.createElement("input");
         savedStock.setAttribute("class", "input");
         savedStock.setAttribute("type", "text");
-        savedStock.setAttribute("id", searchHistory[i]); 
-        savedStock.setAttribute("value", searchHistory[i]);
-        savedStock.textContent = searchHistory[i];
+        savedStock.setAttribute("id", uniqueSearch[i]); 
+        savedStock.setAttribute("value", uniqueSearch[i]);
+        savedStock.textContent = uniqueSearch[i];
         savedStock.addEventListener("click", function() {
             stockData(this.textContent);
             yearStockData(this.textContent);
             dailyHighEl.textContent="";
             dailyLowEl.textContent="";
             yearHighEl.textContent="";
-            yearLowEl.textContent=""
+            yearLowEl.textContent="";
+            dailyChangePercentageEl.textContent="";
 
         });
            
@@ -127,6 +156,7 @@ var buttonClickHandler = function(event) {
     dailyLowEl.textContent = "";
     yearHighEl.textContent = "";
     yearLowEl.textContent = "";
+    dailyChangePercentageEl.textContent = "";
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
     yearStockData(searchedStock);
@@ -139,3 +169,5 @@ getReddit();
 
 //Display Search History to page on load
 displaySearchHistory();
+
+console.log(searchHistory);
