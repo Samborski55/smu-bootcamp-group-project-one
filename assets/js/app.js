@@ -12,7 +12,9 @@ var yearLowEl = document.querySelector("#year-low");
 var dailyChangePercentageEl = document.querySelector("#daily-change");
 var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
-var uniqueSearch = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
+var uniqueSearchReg = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
+var uniqueSearch = uniqueSearchReg.reverse();
+
 
 // function to get daily high and low from stockdata api and save searchedStock in local storage
 var stockData = function (searchedStockEl) {
@@ -73,7 +75,6 @@ var getReddit = function() {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
-                    console.log(data)
                     var nameOfStocks = [];
                     for (var i = 0; i < 25; i++) {
                         var rank = data.results[i].rank;
@@ -127,7 +128,9 @@ var getReddit = function() {
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
-    for (var i=0; i < uniqueSearch.length; i++) {
+    var totalIndex = searchHistory.length;
+    console.log(totalIndex);
+    for (var i = 0; i < 5; i++) {
         var savedStock = document.createElement("input");
         savedStock.setAttribute("class", "input");
         savedStock.setAttribute("type", "text");
@@ -135,7 +138,7 @@ var displaySearchHistory = function() {
         savedStock.setAttribute("value", uniqueSearch[i]);
         savedStock.textContent = uniqueSearch[i];
         savedStock.addEventListener("click", function() {
-            stockData(this.textContent);
+            stockData(this.textContent); 
             yearStockData(this.textContent);
             dailyHighEl.textContent="";
             dailyLowEl.textContent="";
