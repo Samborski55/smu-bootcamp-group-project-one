@@ -25,34 +25,66 @@
         <div class="columns">
             <!--div for the left sidebar showing the stocks-->
             <div id="topStocks" class="column is-narrow has-text-centered">
-               <p class="subtitle is-size-4">WSB Top 25 Tickers</p>
+               <p class="subtitle is-size-4 whiteText">WSB Top 25 Tickers</p>
                 <div class="">
                     <ul id="trending-stock"></ul>
                 </div>
             </div>
 
-            <!--div for the search for stock ticker and saved stocks-->
-            <div class="column is-7 has-text-centered" >
-                <p class="subtitle is-size-4">Search a Stock Ticker</p>
+            <div class="column has-text-centered mainBox">
+                <p class="subtitle is-size-4 whiteText" id="subtitle">Search a Stock Ticker</p>
                 <input id="searched-stock" type="text" placeholder="i.e. APPL, TSLA, SHCR">
-                <button class="button is-primary" id="search-btn">Search</button>
+                <button class="button is-primary clickedStock" id="search-btn">Search</button>
+
+                <div class="card newBox">
+                    <div class="card-content">
+                      <div class="content">
+                        <p class="subtitle is-size-4">Stock Info</p>
+                        <div class="stock-info is-3 has-text-centered" id="stock-info">
+                        <p class="subtitle is-size-4 whiteText" id="subtitle">Stock Information</p>
+                        <h4 class="tickerSymbol" id="tickerSymbol"></h4>
+                        <h4 class="companyName" id="companyName"></h4>
+                        <h4 class="year-low" id="year-low"></h4>
+                        <h4 class="year-high" id="year-high"></h4>
+                        <h4 class="daily-low" id="daily-low"></h4>
+                        <h4 class="daily-high" id="daily-high"></h4>
+                        <h4 class="dailyChangePercentage" id="daily-change"></h4>
+                        <h4 class="sharesOutstanding" id="sharesOutstanding"></h4>
+                        <h4 class="sharesShort" id="sharesShort"></h4>
+                        <h4 class="sharesShortPrevMonth" id="sharesShortPrevMonth"></h4>
+                        </div> 
+                      </div>
+                    </div>
+                </div>
                 
-                <div class="section">
-                    <p class="subtitle is-size-4">Previously Searched Stocks</p>
+                <div class="section newBox">
+                    <p class="subtitle is-size-4 whiteText" id="subtitle">Previously Searched Stocks</p>
                     <div class="saved-stock" id="saved-stock"></div>
                 </div>
             </div>
-            <!-- div to display 52 week high/low, daily high/low, and daily change %-->
-            <div class="stock-info column is-3 has-text-centered" id="stock-info">
-                <p class="subtitle is-size-4">Stock Information</p>
-                <h4 class="year-low" id="year-low"></h4>
-                <h4 class="year-high" id="year-high"></h4>
-                <h4 class="daily-low" id="daily-low"></h4>
-                <h4 class="daily-high" id="daily-high"></h4>
-                <h4 class="dailyChangePercentage" id="daily-change"></h4>
-            </div> -->
         </div>
     </section>
+
+    <div class="modal" id="stockModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title"></p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+          </section>
+        </div>
+      </div>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p class= "subtitle is-size-4" id="whiteText">
+           Thanks for visiting!
+          </p>
+        </div>
+      </footer>
 
     <script src="./assets/js/app.js"></script>
     </div>
