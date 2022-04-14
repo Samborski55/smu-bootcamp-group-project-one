@@ -10,6 +10,11 @@ var dailyLowEl = document.querySelector("#daily-low");
 var yearHighEl = document.querySelector("#year-high");
 var yearLowEl = document.querySelector("#year-low");
 var dailyChangePercentageEl = document.querySelector("#daily-change");
+var tickerSymbolEl = document.querySelector("#tickerSymbol")
+var companyNameEl = document.querySelector("#companyName")
+var sharesOutstandingEl = document.querySelector("#sharesOutstanding")
+var sharesShortEl = document.querySelector("#sharesShort")
+var sharesShortPrevMonthEl = document.querySelector("#sharesShortPrevMonth")
 var apiKey = "rthDvA7nkx4ONAhEszWcXmkkxzxIVDCTE0gCfrdo";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 var uniqueSearchReg = searchHistory.filter((e, i) => searchHistory.indexOf(e) === i);
@@ -49,13 +54,23 @@ var yearStockData = function (searchedStockEl) {
         .then(function(response) {
             if(response.ok) {
                 response.json().then(function(data) {
+                    console.log(data);
+                    var tickerSymbol = "Ticker Symbol: " + data.quoteResponse.result[0].symbol;
+                    var companyName = "Company Name: " + data.quoteResponse.result[0].shortName;
                     var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
+                    var sharesOutstanding = "Shares Outstanding: " + data.quoteResponse.result[0].sharesOutstanding + " shares.";
+                    var sharesShort = "Shorted Amount: " + data.quoteResponse.result[0].sharesShort + " shares.";
+                    var sharesShortPrevMonth = "Shorted Amount Last Month: " + data.quoteResponse.result[0].sharesShortPrevMonth + " shares.";
+                    tickerSymbolEl.append(tickerSymbol);
+                    companyNameEl.append(companyName);
                     yearHighEl.append(yearlyHigh);
                     yearLowEl.append(yearlyLow);
                     dailyChangePercentageEl.append(dailyChangePercentage);
-
+                    sharesOutstandingEl.append(sharesOutstanding);
+                    sharesShortEl.append(sharesShort);
+                    sharesShortPrevMonthEl.append(sharesShortPrevMonth);
                 });
                 
             };
@@ -113,11 +128,16 @@ var getReddit = function() {
                         redditStockName.addEventListener("click", function() {
                             stockData(this.value);
                             yearStockData(this.value);
+                            tickerSymbolEl.textContent="";
+                            companyNameEl.textContent="";
                             dailyHighEl.textContent="";
                             dailyLowEl.textContent="";
                             yearHighEl.textContent="";
                             yearLowEl.textContent="";
                             dailyChangePercentageEl.textContent="";
+                            sharesOutstandingEl.textContent="";
+                            sharesShortEl.textContent="";
+                            sharesShortPrevMonthEl.textContent="";
                         });
                         };          
                     });
@@ -129,7 +149,6 @@ var getReddit = function() {
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
     var totalIndex = searchHistory.length;
-    console.log(totalIndex);
     if (uniqueSearch.length > 0 && uniqueSearch.length < 10) {
         for (var i = 0; i < uniqueSearch.length; i++) {
             var savedStock = document.createElement("input");
@@ -141,12 +160,16 @@ var displaySearchHistory = function() {
             savedStock.addEventListener("click", function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
+                tickerSymbolEl.textContent="";
+                companyNameEl.textContent="";
                 dailyHighEl.textContent="";
                 dailyLowEl.textContent="";
                 yearHighEl.textContent="";
                 yearLowEl.textContent="";
                 dailyChangePercentageEl.textContent="";
-
+                sharesOutstandingEl.textContent="";
+                sharesShortEl.textContent="";
+                sharesShortPrevMonthEl.textContent="";
             });   
             savedStockEl.appendChild(savedStock);
         };
@@ -162,11 +185,16 @@ var displaySearchHistory = function() {
             savedStock.addEventListener("click", function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
+                tickerSymbolEl.textContent="";
+                companyNameEl.textContent="";
                 dailyHighEl.textContent="";
                 dailyLowEl.textContent="";
                 yearHighEl.textContent="";
                 yearLowEl.textContent="";
                 dailyChangePercentageEl.textContent="";
+                sharesOutstandingEl.textContent="";
+                sharesShortEl.textContent="";
+                sharesShortPrevMonthEl.textContent="";
 
             });   
             savedStockEl.appendChild(savedStock);
@@ -181,15 +209,22 @@ var displaySearchHistory = function() {
 
 //function for what to do when search button is clicked
 var buttonClickHandler = function(event) {
-    dailyHighEl.textContent = "";
-    dailyLowEl.textContent = "";
-    yearHighEl.textContent = "";
-    yearLowEl.textContent = "";
-    dailyChangePercentageEl.textContent = "";
+    tickerSymbolEl.textContent="";
+    companyNameEl.textContent="";
+    dailyHighEl.textContent="";
+    dailyLowEl.textContent="";
+    yearHighEl.textContent="";
+    yearLowEl.textContent="";
+    dailyChangePercentageEl.textContent="";
+    sharesOutstandingEl.textContent="";
+    sharesShortEl.textContent="";
+    sharesShortPrevMonthEl.textContent="";
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
     yearStockData(searchedStock);
 };
+
+
 
 var refreshPage = function() {
     window.parent.location = window.parent.location.href;    
@@ -205,4 +240,3 @@ displaySearchHistory();
 getReddit();
 
 
-console.log(searchHistory);
