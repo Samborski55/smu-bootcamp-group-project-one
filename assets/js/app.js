@@ -96,8 +96,8 @@ var getReddit = function() {
                         var redditStockName = document.createElement("button");
                         var linebreak = document.createElement("br");
                         nameOfStocks[i] = data.results[i].ticker;
-                            redditStockName.setAttribute("id", nameOfStocks[i]);
-                            redditStockName.setAttribute("value", nameOfStocks[i]);
+                        redditStockName.setAttribute("id", nameOfStocks[i]);
+                        redditStockName.setAttribute("value", nameOfStocks[i]);
                         var mentions = document.createElement("p");
                         mentions.textContent = "Weekly Mentions: " + data.results[i].mentions;
                         var ticker = document.createElement("p");
@@ -126,16 +126,7 @@ var getReddit = function() {
                         redditStockName.addEventListener("click", function() {
                             stockData(this.value);
                             yearStockData(this.value);
-                            tickerSymbolEl.textContent="";
-                            companyNameEl.textContent="";
-                            dailyHighEl.textContent="";
-                            dailyLowEl.textContent="";
-                            yearHighEl.textContent="";
-                            yearLowEl.textContent="";
-                            dailyChangePercentageEl.textContent="";
-                            sharesOutstandingEl.textContent="";
-                            sharesShortEl.textContent="";
-                            sharesShortPrevMonthEl.textContent="";
+                            clearData();
                         });
                         };          
                     });
@@ -146,56 +137,36 @@ var getReddit = function() {
 //display savedStock as an input to the page and clear daily and yearly high and low elements
 var displaySearchHistory = function() {
     savedStockEl.innerHTML = "";
-    var totalIndex = searchHistory.length;
-    if (uniqueSearch.length > 0 && uniqueSearch.length < 10) {
-        for (var i = 0; i < uniqueSearch.length; i++) {
+    if (uniqueSearchReg.length > 0 && uniqueSearchReg.length < 10) {
+        for (var i = 0; i < uniqueSearchReg.length; i++) {
             var savedStock = document.createElement("input");
             savedStock.setAttribute("class", "input");
             savedStock.setAttribute("type", "text");
-            savedStock.setAttribute("id", uniqueSearch[i]); 
-            savedStock.setAttribute("value", uniqueSearch[i]);
-            savedStock.textContent = uniqueSearch[i];
+            savedStock.setAttribute("id", uniqueSearchReg[i]); 
+            savedStock.setAttribute("value", uniqueSearchReg[i]);
+            savedStock.textContent = uniqueSearchReg[i];
             savedStock.addEventListener("click", function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
-                tickerSymbolEl.textContent="";
-                companyNameEl.textContent="";
-                dailyHighEl.textContent="";
-                dailyLowEl.textContent="";
-                yearHighEl.textContent="";
-                yearLowEl.textContent="";
-                dailyChangePercentageEl.textContent="";
-                sharesOutstandingEl.textContent="";
-                sharesShortEl.textContent="";
-                sharesShortPrevMonthEl.textContent="";
+                clearData();
             });   
-            savedStockEl.appendChild(savedStock);
+             savedStockEl.appendChild(savedStock);
         };
     }
-    else if (uniqueSearch.length > 10) {
+    else if (uniqueSearchReg.length > 10) {
         for (var i = 0; i < 10; i++) {
             var savedStock = document.createElement("input");
             savedStock.setAttribute("class", "input");
             savedStock.setAttribute("type", "text");
-            savedStock.setAttribute("id", uniqueSearch[i]); 
-            savedStock.setAttribute("value", uniqueSearch[i]);
-            savedStock.textContent = uniqueSearch[i];
+            savedStock.setAttribute("id", uniqueSearchReg[i]); 
+            savedStock.setAttribute("value", uniqueSearchReg[i]);
+            savedStock.textContent = uniqueSearchReg[i];
             savedStock.addEventListener("click", function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
-                tickerSymbolEl.textContent="";
-                companyNameEl.textContent="";
-                dailyHighEl.textContent="";
-                dailyLowEl.textContent="";
-                yearHighEl.textContent="";
-                yearLowEl.textContent="";
-                dailyChangePercentageEl.textContent="";
-                sharesOutstandingEl.textContent="";
-                sharesShortEl.textContent="";
-                sharesShortPrevMonthEl.textContent="";
-
+                clearData();
             });   
-            savedStockEl.appendChild(savedStock);
+             savedStockEl.appendChild(savedStock);
         };
     }
     else {
@@ -205,8 +176,7 @@ var displaySearchHistory = function() {
     }
 };
 
-//function for what to do when search button is clicked
-var buttonClickHandler = function(event) {
+var clearData = function() {
     tickerSymbolEl.textContent="";
     companyNameEl.textContent="";
     dailyHighEl.textContent="";
@@ -217,14 +187,24 @@ var buttonClickHandler = function(event) {
     sharesOutstandingEl.textContent="";
     sharesShortEl.textContent="";
     sharesShortPrevMonthEl.textContent="";
+};
+
+//function for what to do when search button is clicked
+var buttonClickHandler = function(event) {
+    clearData();
     var searchedStock = searchedStockEl.value.toUpperCase().trim();
     stockData(searchedStock);
     yearStockData(searchedStock);
 };
 
 var refreshPage = function() {
-    window.parent.location = window.parent.location.href;    
+   console.log(uniqueSearch);
+   console.log(uniqueSearchReg);
 };
+
+// var refreshPage = function() {
+//     window.parent.location = window.parent.location.href;    
+// };
 
 searchButtonEl.addEventListener("click", buttonClickHandler);
 
