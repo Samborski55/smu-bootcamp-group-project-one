@@ -197,15 +197,6 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
-// var refreshPage = function() {
-//    console.log(uniqueSearch);
-//    console.log(uniqueSearchReg);
-// };
-
-// var refreshPage = function() {
-//     window.parent.location = window.parent.location.href;    
-// };
-
 searchButtonEl.addEventListener("click", buttonClickHandler);
 
 
