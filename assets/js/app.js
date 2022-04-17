@@ -43,7 +43,7 @@ var yearStockData = function (searchedStockEl) {
         method: 'GET',
         headers: {
             'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
-		    'X-RapidAPI-Key': '057567cd18mshd1157073f98bd53p13b433jsn1f9b6a4df973'
+		    'X-RapidAPI-Key': 'd06edda2damsh8ad089f57d0c68fp13a6adjsn3add26e6bce8'
         }
     };
     fetch('https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=' + searchedStockEl, options)
@@ -55,8 +55,6 @@ var yearStockData = function (searchedStockEl) {
                     searchHistory.push(searchedStockEl);
                     uniqueSearchReg.push(searchedStockEl);
                     localStorage.setItem("search", JSON.stringify(searchHistory));
-                    console.log(uniqueSearch);
-                    console.log(uniqueSearchReg);
                     var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
