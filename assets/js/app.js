@@ -32,7 +32,6 @@ var stockData = function (searchedStockEl) {
                 var dailyLow = "Daily Low: $" + data.data[0].day_low;
                 dailyHighEl.append(dailyHigh);
                 dailyLowEl.append(dailyLow);
-                displaySearchHistory();
             });
         };
     });
@@ -54,7 +53,10 @@ var yearStockData = function (searchedStockEl) {
                     var tickerSymbol = "Ticker Symbol: " + data.quoteResponse.result[0].symbol;
                     var companyName = "Company Name: " + data.quoteResponse.result[0].shortName;
                     searchHistory.push(searchedStockEl);
+                    uniqueSearchReg.push(searchedStockEl);
                     localStorage.setItem("search", JSON.stringify(searchHistory));
+                    console.log(uniqueSearch);
+                    console.log(uniqueSearchReg);
                     var yearlyHigh = "52 Week High: $" + data.quoteResponse.result[0].fiftyTwoWeekHigh;
                     var yearlyLow = "52 Week Low: $" + data.quoteResponse.result[0].fiftyTwoWeekLow;
                     var dailyChangePercentage = "Gain/Loss Since Open: " + data.quoteResponse.result[0].regularMarketChangePercent + "%";
@@ -69,6 +71,7 @@ var yearStockData = function (searchedStockEl) {
                     sharesOutstandingEl.append(sharesOutstanding);
                     sharesShortEl.append(sharesShort);
                     sharesShortPrevMonthEl.append(sharesShortPrevMonth);
+                    displaySearchHistory(uniqueSearchReg);
                 });
                 
             };
@@ -102,7 +105,6 @@ var getReddit = function() {
                         mentions.textContent = "Weekly Mentions: " + data.results[i].mentions;
                         var ticker = document.createElement("p");
                         ticker.textContent = "Stock Name: " + data.results[i].ticker + " ";
-                        
                         trendingStockEl.append(redditStockName);
                          if (rank < parseYesterday) {
                              redditStockName.style.backgroundColor= "green";
@@ -149,8 +151,8 @@ var displaySearchHistory = function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
                 clearData();
-            });   
-             savedStockEl.appendChild(savedStock);
+            }); 
+             savedStockEl.append(savedStock);
         };
     }
     else if (uniqueSearchReg.length > 10) {
@@ -165,8 +167,8 @@ var displaySearchHistory = function() {
                 stockData(this.textContent); 
                 yearStockData(this.textContent);
                 clearData();
-            });   
-             savedStockEl.appendChild(savedStock);
+            });
+             savedStockEl.append(savedStock);
         };
     }
     else {
@@ -197,10 +199,10 @@ var buttonClickHandler = function(event) {
     yearStockData(searchedStock);
 };
 
-var refreshPage = function() {
-   console.log(uniqueSearch);
-   console.log(uniqueSearchReg);
-};
+// var refreshPage = function() {
+//    console.log(uniqueSearch);
+//    console.log(uniqueSearchReg);
+// };
 
 // var refreshPage = function() {
 //     window.parent.location = window.parent.location.href;    
