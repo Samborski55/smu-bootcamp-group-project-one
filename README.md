@@ -42,6 +42,13 @@ After searching, or clicking from the list, users will see that stock added to t
 
 ----
 
+Screenshot
+
+![screencapture-file-C-Users-jvit1-Desktop-projects-smu-bootcamp-group-project-one-index-html-2022-04-17-13_37_49](https://user-images.githubusercontent.com/54601156/163728008-4df561a7-fef8-4cfe-85b5-b2dc2d8558d8.jpg)
+
+
+----
+
 ## Contributors
 
 * [@jvit1985](https://github.com/jvit1985)  
